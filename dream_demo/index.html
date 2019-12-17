@@ -1,0 +1,110 @@
+<html>
+
+<head>
+
+    <title>Enigmatic Cadavre</title>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <style>
+        body {
+            font-family: 'Courier', sans-serif;
+            text-align: left;
+            background: black;
+            color: white;
+            font-size: 15px;
+            margin: 30px;
+        }
+        
+        .paragraph {
+            width: 500px;
+            margin-top: 10px;
+        }
+        
+        .responses {
+            font-style: italic;
+            width: 480px;
+            margin: 20px;
+            /* border-color: white;
+            border-style: solid;
+            border-width: 1px; */
+        }
+        
+        #respLineNum {
+            font-style: italic;
+            color: grey;
+            margin-right: 5px;
+            vertical-align: top;
+            margin-left: 25px;
+            /*5 buffer from table*/
+        }
+        
+        table {
+            /* border-collapse: collapse; */
+            /* border: 2px black solid; */
+            font-style: italic;
+            width: 500px;
+            color: white;
+        }
+        
+        table td:first-child {
+            color: grey;
+            vertical-align: top;
+        }
+        
+        td {
+            /* border: 1px black solid; */
+            padding: 5px;
+        }
+    </style>
+
+    <body>
+        <div class="paragraph">
+            <h1>Dream generator</h1>
+            <p>Welcome to dream generator! You will help us generate our collective dream. Please write whatever comes to you after reading the 3 most recent responses below.</p>
+            <p>We will publish the collection, slightly edited for coherence, after we have received 500 responses.</p>
+        </div>
+
+        <div class="responses">
+            <text> Previous 3 lines:</text>
+            <!-- contains the most recent n responses, with their line numbers -->
+        </div>
+
+        <div class="paragraph">
+            <form>
+                <text id="respLineNum"></text>
+                <textarea rows="5" cols="60" style="resize:none"></textarea>
+                <br><br> Name: <input type="text"> Email: <input type="text">
+                <br><br><input type="submit" value="Submit" />
+            </form>
+        </div>
+
+        <script>
+            d3.text("fake_data.csv", function(data) {
+                var parsedCSV = d3.csv.parseRows(data);
+                var last3Rows = parsedCSV.slice(-3, );
+
+                var container = d3.select(".responses")
+                    .append("table")
+
+                .selectAll("tr")
+                    .data(last3Rows).enter()
+                    .append("tr")
+
+                .selectAll("td")
+                    .data(function(d) {
+                        return d;
+                    }).enter()
+                    .append("td")
+                    .text(function(d) {
+                        return d;
+                    });
+
+                var resp = d3.select("#respLineNum")
+                    .text(Number(last3Rows.slice(-1, )[0][0]) + 1);
+            });
+        </script>
+
+
+    </body>
+</head>
+
+</html>
